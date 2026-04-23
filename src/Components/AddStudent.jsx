@@ -8,32 +8,34 @@ function AddStudent({students,setStudents}) {
         score:""
     })
 
-
-    const handleNameChange = (value,index)=>{
+    const handleNameChange = (value)=>{
         setNewStudent(s=>({
             ...s,
-            id:index+1,
             name:value
         }))
     }
 
-       const handleScoreChange = (value,index)=>{
+    const handleScoreChange = (value)=>{
         setNewStudent(s=>({
             ...s,
-            score:value
+            score:Number(value)   // 🔥 important
         }))
     }
 
     const submitStudent = ()=>{
-        setStudents((prev)=>[...prev,newStudent])
+        const studentWithId = {
+            ...newStudent,
+            id: Date.now()   // 🔥 unique id
+        }
+
+        setStudents(prev => [...prev, studentWithId])
 
         setNewStudent({
-        id:"",
-        name:"",
-        score:""
+            id:"",
+            name:"",
+            score:""
         })
     }
-
 
   return (
     <div>
@@ -47,14 +49,11 @@ function AddStudent({students,setStudents}) {
             </div>
 
             <div className="text-[#256594] flex border-0">
-                <input type="text" name="" placeholder="STUDENT NAME" id="" className="flex-1 p-5 border-1 outline-0" value={newStudent.name} onChange={(e)=>handleNameChange(e.target.value)}/>
-                <input type="text" name="" id="" placeholder="SCORE (0-100)"  className="flex-1 p-5 border-1  outline-0" value={newStudent.score} onChange={(e)=>handleScoreChange(e.target.value)}/>
+                <input type="text" placeholder="STUDENT NAME" className="flex-1 p-5 border-1 outline-0" value={newStudent.name} onChange={(e)=>handleNameChange(e.target.value)}/>
+                <input type="text" placeholder="SCORE (0-100)"  className="flex-1 p-5 border-1  outline-0" value={newStudent.score} onChange={(e)=>handleScoreChange(e.target.value)}/>
                 <button className="w-30 p-5 border-1 cursor-pointer border-t-[#256594] hover:bg-[#00FFE0]" onClick={submitStudent}>+ ADD</button>
             </div>
-
-
         </div>
-
     </div>
   )
 }
